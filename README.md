@@ -19,9 +19,11 @@ Installation
 
 1. Clone the repository `git clone https://github.com/mpatacchiola/imujoco.git` and set it as current folder with `cd imujoco`
 
-2. Download the dataset files from our page on [zenodo.com](https://zenodo.org/):
+2. Download the dataset files (approximately **3.4 GB**) from our page on [zenodo.com](https://zenodo.org/):
  
-**Coming soon**
+```
+COMING SOON
+```
 
 3. Unzip the files into the `imujoco` folder: 
 
@@ -34,15 +36,17 @@ unzip xml.zip
 Usage
 ------
 
-The following is an example of how to use [sampler.py](./sampler.py) to sample trajectories (pytorch).
+**Sampling offline trajectories**
+
+In iMuJoCo there are a set of trajectories collected by agents trained using SAC. There is a total of 100 trajectores per each environment variant, which are stored as numpy compressed files (npz) into the `./dataset` folder. The following is an example of how to use [sampler.py](./sampler.py) to sample offline trajectories (pytorch).
 
 ```python
 import os
 from sampler import Sampler
 
-env_name = "Hopper-v3" # can be: 'Hopper-v3', 'HalfCheetah-v3', 'Walker2d-v3'
+env_name = "Hopper-v3" # can be: 'Hopper-v3', 'HalfCheetah-v3', 'Walker2d-v3'.
 
-# Here we simply accumulate all the npz files for Hopper-v3
+# Here we simply accumulate all the npz files for Hopper-v3.
 files_list = list()
 for filename in os.listdir("./dataset"):
     if filename.endswith(".npz") and env_name.lower()[0:-2] in filename: 
@@ -50,15 +54,38 @@ for filename in os.listdir("./dataset"):
     print("\n", files_list, "\n")
 
 # Defining train/test samplers by allocating 75% of the 
-# trajectories for training and 25% for testing
+# trajectories for training and 25% for testing.
 train_sampler = Sampler(env_name=env_name, data_list=files_list, portion=(0.0,0.75))
 test_sampler = Sampler(env_name=env_name, data_list=files_list, portion=(0.75,1.0))
 
 # Sampling 5 trajectories (without replacement) using the train sampler
-# The sampler returns the states/actions tensor for the sequences
+# The sampler returns the states/actions tensor for the sequences.
 x, y = train_sampler.sample(tot_shots=5, replace=False)
 ```
 
+**Loading one of the environment variants**
+
+Each environment variant can be loaded as a standard OpenAI-Gym env, by using the XML file associated to it. For instance, here we load an environment for Hopper where the mass of the leg has been decreased by 25%:
+
+```python
+import gym
+import os
+
+env_name = "Hopper-v3"
+xml_file = os.path.abspath("./xml/hopper-massdec_25_leggeom.xml")
+
+# Generate and reset the env.
+env = gym.make(env_name, xml_file=xml_file)
+env.reset()
+
+# Move in the env with a random policy for one episode.
+for _ in range(1000):
+    action = env.action_space.sample() 
+    observation, reward, done, _ = env.step(action)
+    if done: break
+
+env.close()
+```
 
 
 
