@@ -14,4 +14,51 @@ In order to satisfy these requirements, we created a variant of OpenAI-Gym MuJoC
 
 Note that each environment has unique dynamics and agent configurations, resulting in different numbers of variants. Specifically, we have 37 variants for Hopper, 53 for Halfcheetah, and 64 for Walker2d, making a total of 154 variants.
 
+Installation
+------------
+
+1. Clone the repository `git clone https://github.com/mpatacchiola/imujoco.git` and set it as current folder with `cd imujoco`
+
+2. Download the dataset files from our page on [zenodo.com](https://zenodo.org/):
+ 
+**Coming soon**
+
+3. Unzip the files into the `imujoco` folder: 
+
+```
+unzip dataset.zip
+unzip policies.zip
+unzip xml.zip
+```
+
+Usage
+------
+
+The following is an example of how to use [sampler.py](./sampler.py) to sample trajectories (pytorch).
+
+```python
+import os
+from sampler import Sampler
+
+env_name = "Hopper-v3" # can be: 'Hopper-v3', 'HalfCheetah-v3', 'Walker2d-v3'
+
+# Here we simply accumulate all the npz files for Hopper-v3
+files_list = list()
+for filename in os.listdir("./dataset"):
+    if filename.endswith(".npz") and env_name.lower()[0:-2] in filename: 
+             files_list.append(os.path.abspath("./dataset"+filename))
+    print("\n", files_list, "\n")
+
+# Defining train/test samplers by allocating 75% of the 
+# trajectories for training and 25% for testing
+train_sampler = Sampler(env_name=env_name, data_list=files_list, portion=(0.0,0.75))
+test_sampler = Sampler(env_name=env_name, data_list=files_list, portion=(0.75,1.0))
+
+# Sampling 5 trajectories (without replacement) using the train sampler
+# The sampler returns the states/actions tensor for the sequences
+x, y = train_sampler.sample(tot_shots=5, replace=False)
+```
+
+
+
 
