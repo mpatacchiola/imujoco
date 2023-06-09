@@ -1,5 +1,29 @@
 Official repository of the iMuJoCo (iMitation MuJoCo) dataset, an offline dataset for imitation learning.
 
+iMuJoCo builds on top of OpenAI-Gym MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
+
+iMuJoCo includes (1) 100 trajectories from pretrained policies for each environment variant (`./imujoco/dataset` folder), (2) pretrained SAC policies for each variant (`./imujoco/policies` folder), and (3) XML files builder for each environment (`./imujoco/xml` folder). The user can access the environment variant (via the OpenAI-Gym API and the XML configuration file), the offline trajectories (via a Python/Pytorch data loader), and the underlying SAC policy network (using the Stable Baselines API). 
+
+The overall structure of iMuJoCo is the following:
+
+```
+./imujoco
+    dataset
+        sac-halfcheetah-jointdec_25_bfoot.npz
+        sac-halfcheetah-jointdec_25_bshin.npz
+        ...
+        
+    policies
+        sac-halfcheetah-jointdec_25_bfoot.zip
+        sac-halfcheetah-jointdec_25_bshin.zip
+        ...
+        
+    xml
+        halfcheetah-jointdec_25_bfoot.xml
+        halfcheetah-jointdec_25_bshin.xml
+        ...
+```
+
 
 Difference with previous benchmarks
 ----------------------------------
@@ -8,12 +32,10 @@ A few benchmarks have been proposed to address meta-learning and offline learnin
 
 Existing benchmarks are not suited for this case as they: do not provide pretrained policies and their associated trajectories (e.g. Meta-World and Procgen), lack in diversity (Meta-World and D4RL), or do not support continuous control problems (e.g. Procgen).
 
-Overview
---------
+Environment variants
+--------------------
 
-In order to satisfy these requirements, we created a variant of OpenAI-Gym MuJoCo that we called iMuJoCo (iMitation MuJoCo). The iMuJoCo dataset builds on top of MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
-
-The user can access the environment variant (via the OpenAI-Gym API and a XML configuration file), the offline trajectories (via a Python data loader), and the underlying SAC policy network (using the Stable Baselines API). Each environment variant falls into one of these four categories:
+Each environment variant falls into one of these four categories:
 
 - **mass**: increase or decrease the mass of a limb by a percentage; e.g. if the mass is 2.5 and the percentage is 200% then the new mass for that limb will be 7.5.
 - **joint**: limit the mobility of a joint by a percentage range, e.g. if the joint range is 180 degrees and the percentage is -50% then the maximum range of motion becomes 90 degrees.
@@ -97,12 +119,13 @@ env.close()
 
 **Loading a pretrained SAC policy**
 
-Each environment variant has an associated SAC policy that has been trained on it. For this stage we used [Stable Baselines v3](https://stable-baselines3.readthedocs.io). Here is an example on how to load a pretrained policy for its associated environment and evaluate its performance:
+Each environment variant has an associated SAC policy that has been trained on it. For this stage we used [Stable Baselines v3](https://stable-baselines3.readthedocs.io).
+
+Here is an example on how to load a pretrained policy for its associated environment and evaluate its performance:
 
 ```python
 import os
 from stable_baselines3 import SAC
-from stable_baselines3.common.evaluation import evaluate_policy
 import gym
 
 def evaluate_policy(env, model, tot_episodes, deterministic=True): 
