@@ -2,9 +2,9 @@ Official repository of the iMuJoCo (iMitation MuJoCo) dataset, an offline datase
 
 *"Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation", Patacchiola M., Sun M., Hofmann K., Turner R.E., Conference on Lifelong Learning Agents - CoLLAs 2023*.
 
-iMuJoCo builds on top of OpenAI-Gym MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
+**Overview**: iMuJoCo builds on top of OpenAI-Gym MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
 
-iMuJoCo includes (1) 100 trajectories from pretrained policies for each environment variant (`./imujoco/dataset` folder), (2) pretrained SAC policies for each variant (`./imujoco/policies` folder), and (3) XML files builder for each environment (`./imujoco/xml` folder). The user can access the environment variant (via the OpenAI-Gym API and the XML configuration file), the offline trajectories (via a Python/Pytorch data loader), and the underlying SAC policy network (using the Stable Baselines API). 
+**What's included?** iMuJoCo includes (1) 100 trajectories from pretrained policies for each environment variant (`./imujoco/dataset` folder), (2) pretrained SAC policies for each variant (`./imujoco/policies` folder), and (3) XML files builder for each environment (`./imujoco/xml` folder). The user can access the environment variant (via the OpenAI-Gym API and the XML configuration file), the offline trajectories (via a Python/Pytorch data loader), and the underlying SAC policy network (using the Stable Baselines API).
 
 The overall structure of iMuJoCo is the following:
 
@@ -49,15 +49,17 @@ Note that each environment has unique dynamics and agent configurations, resulti
 Installation
 ------------
 
-1. Clone the repository `git clone https://github.com/mpatacchiola/imujoco.git` and set it as current folder with `cd imujoco`
+1. Requirements: there are no particular requirements, you need to install Numpy and Pytorch to use the sampler, [OpenAI-Gym](https://github.com/openai/gym) and [StableBaselines3](https://stable-baselines3.readthedocs.io) for loading the environment/policies.
 
-2. Download the dataset files (approximately **3.4 GB**) from our page on [zenodo.com](https://zenodo.org/):
+2. Clone the repository `git clone https://github.com/mpatacchiola/imujoco.git` and set it as current folder with `cd imujoco`
+
+3. Download the dataset files (approximately **3.4 GB**) from our page on [zenodo.com](https://zenodo.org/):
  
 ```
 COMING SOON
 ```
 
-3. Unzip the files into the `imujoco` folder: 
+4. Unzip the files into the `imujoco` folder: 
 
 ```
 unzip dataset.zip
