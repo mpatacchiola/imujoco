@@ -95,5 +95,47 @@ for _ in range(1000):
 env.close()
 ```
 
+**Loading a pretrained SAC policy**
+
+Each environment variant has an associated SAC policy that has been trained on it. For this stage we used [Stable Baselines v3](https://stable-baselines3.readthedocs.io). Here is an example on how to load a pretrained policy for its associated environment and evaluate its performance:
+
+```python
+import os
+from stable_baselines3 import SAC
+from stable_baselines3.common.evaluation import evaluate_policy
+import gym
+
+def evaluate_policy(env, model, tot_episodes, deterministic=True): 
+    model.policy.actor.eval()
+    episode_reward_list = list()
+    for episode in range(tot_episodes):
+        obs_t = env.reset()
+        cumulated_reward = 0.0
+        for i in range(1000):            
+            action, _states = model.predict(obs_t, deterministic=deterministic)
+            obs_t1, reward, done, info = env.step(action)
+            cumulated_reward += reward
+            if done: obs_t1 = env.reset()   
+            obs_t = obs_t1           
+        episode_reward_list.append(cumulated_reward)
+    return episode_reward_list
+
+
+env_name = "Hopper-v3"
+eval_episodes = 10
+xml_file = os.path.abspath("./xml/hopper-massdec_25_leggeom.xml")
+policy_file = os.path.abspath("./policies/sac-hopper-massdec_25_leggeom.zip")
+
+# Create the Gym env.
+env = gym.make(env_name, xml_file=xml_file)
+
+# Create the SAC env and load the pretrained policy
+model = SAC("MlpPolicy", env, verbose=1)
+model = SAC.load(policy_file)
+
+# Evaluate the policy on the associated environment
+reward_list = evaluate_policy(env, model, tot_episodes=eval_episodes)
+print(f"Average reward on {eval_episodes} episodes .... {sum(reward_list)/len(reward_list)}")
+```
 
 
