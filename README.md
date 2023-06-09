@@ -1,4 +1,6 @@
-Official repository of the iMuJoCo (iMitation MuJoCo) dataset, an offline dataset for imitation learning. Presented in *"Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation", Patacchiola M., Sun M., Hofmann K., Turner R.E., Conference on Lifelong Learning Agents - CoLLAs 2023*.
+Official repository of the iMuJoCo (iMitation MuJoCo) dataset, an offline dataset for imitation learning. Presented in: 
+
+*"Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation", Patacchiola M., Sun M., Hofmann K., Turner R.E., Conference on Lifelong Learning Agents - CoLLAs 2023*.
 
 iMuJoCo builds on top of OpenAI-Gym MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
 
@@ -164,7 +166,7 @@ print(f"Average reward on {eval_episodes} episodes .... {sum(reward_list)/len(re
 Citation
 --------
 
-```
+```bibtex
 @inproceedings{patacchiola2023comparing,
   title={Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation},
   author={Patacchiola, Massimiliano and Sun, Mingfei and Hofmann, Katja and Turner, Richard E},
