@@ -1,6 +1,8 @@
+[![arXiv](https://img.shields.io/badge/arXiv-2206.09843-b31b1b.svg)](https://arxiv.org/abs/2306.13554)
+
 Official repository of the iMuJoCo (iMitation MuJoCo) dataset, an offline dataset for imitation learning. Presented in: 
 
-*"Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation", Patacchiola M., Sun M., Hofmann K., Turner R.E., Conference on Lifelong Learning Agents - CoLLAs 2023*.
+*"Comparing the Efficacy of Fine-Tuning and Meta-Learning for Few-Shot Policy Imitation", Patacchiola M., Sun M., Hofmann K., Turner R.E., Conference on Lifelong Learning Agents - CoLLAs 2023* [[arXiv]](https://arxiv.org/abs/2306.13554)
 
 **Overview**: iMuJoCo builds on top of OpenAI-Gym MuJoCo providing a heterogeneous benchmark for training and testing imitation learning methods and offline RL methods. Heterogeneity is achieved by producing a large number of variants of three base environments: Hopper, Halfcheetah, and Walker2d. For each variant a policy has been trained via SAC, then the policy has been used to generate 100 offline trajectories. 
 
@@ -53,18 +55,20 @@ Installation
 
 2. Clone the repository `git clone https://github.com/mpatacchiola/imujoco.git` and set it as current folder with `cd imujoco`
 
-3. Download the dataset files (approximately **3.4 GB**) from our page on [zenodo.com](https://zenodo.org/):
+3. Download the dataset files (approximately **2.7 GB**) from our page on [zenodo.org](https://zenodo.org/record/7971395):
  
 ```
-COMING SOON
+wget https://zenodo.org/record/7971395/files/xml.zip
+wget https://zenodo.org/record/7971395/files/policies.zip
+wget https://zenodo.org/record/7971395/files/dataset.zip
 ```
 
 4. Unzip the files into the `imujoco` folder: 
 
 ```
-unzip dataset.zip
-unzip policies.zip
 unzip xml.zip
+unzip policies.zip
+unzip dataset.zip
 ```
 
 Usage
