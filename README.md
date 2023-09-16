@@ -88,8 +88,8 @@ env_name = "Hopper-v3" # can be: 'Hopper-v3', 'HalfCheetah-v3', 'Walker2d-v3'.
 files_list = list()
 for filename in os.listdir("./dataset"):
     if filename.endswith(".npz") and env_name.lower()[0:-2] in filename: 
-             files_list.append(os.path.abspath("./dataset"+filename))
-    print("\n", files_list, "\n")
+             files_list.append(os.path.abspath("./dataset/"+filename))
+print("\n", files_list, "\n")
 
 # Defining train/test samplers by allocating 75% of the 
 # trajectories for training and 25% for testing.
